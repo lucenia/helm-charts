@@ -1,0 +1,17 @@
+{{- if .Values.networkPolicy.create -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "skylite.uname" . }}-opensearch-net
+  labels:
+    {{- include "skylite.labels" . | nindent 4 }}
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{ template "skylite.uname" . }}-transport-client: "true"
+  podSelector:
+    matchLabels:
+      {{ template "skylite.uname" . }}-transport-client: "true"
+{{- end }}
