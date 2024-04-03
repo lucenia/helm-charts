@@ -1,17 +1,21 @@
+# clusterName is the name used for the skylite cluster; this should be unique per namespace
 clusterName: "skylite-cluster"
+# nodeGroup is the name used for each group of nodes in the cluster
 nodeGroup: "manager"
 
-# The service that non-manager groups will try to connect to when joining the cluster
-# This should be set to clusterName + "-" + nodeGroup for your manager group
-managerService: "skylite-cluster-manager"
+# managerService is the service that non-manager groups will try to connect to when joining the cluster
+# This should be set to clusterName + "-" + nodeGroup for your manager group.
+managerService: ""
 
-# Set singleNode to true if Skylite cluster config discovery.type is set to single-node
+# singleNode is a boolean that determines if the cluster will be created with 1 replica
+# Set to true if Skylite cluster config discovery.type is set to single-node
 # If true, the cluster will be created with 1 replica by default
 # If false, the cluster will be created the replicaCount number of nodes
 singleNode: false
+# replicaCount is the number of nodes in the Skylite cluster
 replicaCount: 3
 
-# Skylite node roles settings applied to nodeGroup
+# roles represent the Skylite node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
 # For example, node.roles=master,ingest,data,remote_cluster_client
 roles:
@@ -20,18 +24,19 @@ roles:
   - data
   - remote_cluster_client
 
+# majorVersion is the major version of Skylite to deploy; set this when using a custom image
 # If not set, majorVersion defaults to .Values.imageTag, then .Chart.AppVersion
-# Set majorVersion if using a custom image
 majorVersion: ""
 
 global:
-  # Set dockerRegistry to change the default docker registry, for example, a private registry
+  # dockerRegistry is used to change the default docker registry; for example, a private registry
   dockerRegistry: ""
 
-# Defines the home directory for the Skylite cluster
+# skyliteHome defines the home directory for the Skylite cluster
 # Allows config files to be added to {{ .Values.skyliteHome }}/config
 skyliteHome: "/usr/share/opensearch"
 
+# config is used to add configuration such as `opensearch.yml` and `log4j2.properties`
 config:
   # Values must be YAML literal style scalar / YAML multiline string.
   # <filename>: |
@@ -99,7 +104,7 @@ config:
     ######## End OpenSearch Security Demo Configuration ########
   # log4j2.properties:
 
-# Extra environment variables to append to nodeGroup
+# extraEnvs are additional environment variables to set for  the nodeGroup
 # Will be appended to the current 'env:' key. You can use any kubernetes env syntax
 extraEnvs: []
 #  - name: MY_ENVIRONMENT_VAR
@@ -109,49 +114,63 @@ extraEnvs: []
 #  - name: OPENSEARCH_INITIAL_ADMIN_PASSWORD
 #    value: <strong-password>
 
-# Load environment variables from Kubernetes secret or config map
+# envFrom is used to load environment variables from Kubernetes secrets or config maps
 envFrom: []
 # - secretRef:
 #     name: env-secret
 # - configMapRef:
 #     name: config-map
 
-# List of secrets and paths to mount inside the pod
+# secretMounts is a list of secrets and paths to mount inside the pod
 # For example, mounting certificates for security
 secretMounts: []
 
+# hostAliases is used to add entries to the pod's /etc/hosts file
 hostAliases: []
 # - ip: "127.0.0.1"
 #   hostnames:
 #   - "foo.local"
 #   - "bar.local"
 
+# image is the Skylite Docker image
 image:
+  # repository is the image repository and name
   repository: "opensearchproject/opensearch"
+  # pullPolicy is the Kubernetes imagePullPolicy
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # tag overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# imagePullSecrets is used to set secrets to pull images from a private registry
 imagePullSecrets: []
+
+# nameOverride is used to override the `clusterName` when naming resources
 nameOverride: ""
+
+# fullnameOverride is used to override the `clusterName` and `nodeGroup` when naming resources
+# This should only be used when using a single `nodeGroup`, otherwise there will be name conflicts
 fullnameOverride: ""
 
+# podAnnotations is used to add annotations to all Skylite pods
 podAnnotations: {}
   # "key": "value"
 
-# Skylite Statefulset annotations
+# skyliteAnnotations adds annotations to the Skylite Statefulset
 skyliteAnnotations: {}
 
-# additional labels
+# labels is used to add labels to all Skylite pods
 labels: {}
 
+# skyliteJavaOpts sets the Java options for Skylite
 skyliteJavaOpts: "-Xmx512M -Xms512M"
 
+# resources is used to set the resources for the Skylite StatefulSet
 resources:
   requests:
     cpu: "1000m"
     memory: "100Mi"
 
+# initResources is used to set resources for the init container in the StatefulSet
 initResources: {}
 #  limits:
 #     cpu: "25m"
@@ -160,6 +179,7 @@ initResources: {}
 #     cpu: "25m"
 #     memory: "128Mi"
 
+# sidecarResources is used to set resources for the sidecar container in the StatefulSet
 sidecarResources: {}
 #   limits:
 #     cpu: "25m"
@@ -168,17 +188,21 @@ sidecarResources: {}
 #     cpu: "25m"
 #     memory: "128Mi"
 
+# networkHost is used as the value for network.host in the Skylite configuration
 networkHost: "0.0.0.0"
 
+# rbac is used to specify settings for RBAC resources - role, rolebinding, serviceaccount
 rbac:
-  # Specifies whether RBAC resources should be created
+  # create is a boolean that specifies whether RBAC resources should be created
   create: false
-  # Annotations to add to the Service Account
+  # serviceAccountAnnotations are annotations to add to the ServiceAccount
   serviceAccountAnnotations: {}
+  # serviceAccountName is used to override the name of the ServiceAccount created by the chart
   serviceAccountName: ""
-  # Controls whether the Service Account token is automatically mounted to /var/run/secrets/kubernetes.io/serviceaccount
+  # automountServiceAccountToken controls whether the Service Account token is automatically mounted to the Skylite StatefulSet pods
   automountServiceAccountToken: false
 
+# podSecurityPolicy is used to specify settings for the PodSecurityPolicy
 podSecurityPolicy:
   create: false
   name: ""
@@ -198,6 +222,7 @@ podSecurityPolicy:
       - persistentVolumeClaim
       - emptyDir
 
+# persistence is used to specify settings for Skylite persistent volumes
 persistence:
   enabled: true
   # Set to false to disable the `fsgroup-volume` initContainer that will update permissions on the persistent disk.
@@ -221,20 +246,24 @@ persistence:
   size: 8Gi
   annotations: {}
 
+# extraVolumes is used to add extra volumes to the Skylite StatefulSet
 extraVolumes: []
   # - name: extras
   #   emptyDir: {}
 
+# extraVolumeMounts is used to add extra volume mounts to the Skylite StatefulSet
 extraVolumeMounts: []
   # - name: extras
   #   mountPath: /usr/share/extras
   #   readOnly: true
 
+# extraContainers is used to add containers to the Skylite StatefulSet
 extraContainers: []
   # - name: do-something
   #   image: busybox
   #   command: ['do', 'something']
 
+# extraInitContainers is used to add init containers to the Skylite StatefulSet
 extraInitContainers: []
   # - name: do-somethings
   #   image: busybox
