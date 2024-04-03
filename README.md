@@ -2,7 +2,11 @@
 
 This repository contains the Helm charts for Lucenia's products.
 
-# Kafka
+## Skylite
+
+The [Skylite Helm chart](./skylite) defines resources for deploying Skylite on Kubernetes. See the [Skylite documentation](./skylite/README.md) and [values](./skylite/values.yaml) for more information on configuring and deploying Skylite.
+
+## Kafka
 
 Kafka can be accessed by consumers via port 9092 on the following DNS name from within your cluster:
 
@@ -14,8 +18,7 @@ Each Kafka broker can be accessed by producers via port 9092 on the following DN
     lucenia-kafka-controller-1.lucenia-kafka-controller-headless.opensearch.svc.cluster.local:9092
     lucenia-kafka-controller-2.lucenia-kafka-controller-headless.opensearch.svc.cluster.local:9092
 
-The CLIENT listener for Kafka client connections from within your cluster have been configured with the following security settings:
-    - SASL authentication
+The CLIENT listener for Kafka client connections from within your cluster have been configured with the following security settings: - SASL authentication
 
 To connect a client to your Kafka, you need to create the 'client.properties' configuration files with the content below:
 
@@ -36,6 +39,7 @@ kubectl exec --tty -i lucenia-kafka-client --namespace opensearch -- bash
 ```
 
 PRODUCER:
+
 ```bash
 kafka-console-producer.sh \
     --producer.config /tmp/client.properties \
@@ -44,6 +48,7 @@ kafka-console-producer.sh \
 ```
 
 CONSUMER:
+
 ```bash
 kafka-console-consumer.sh \
     --consumer.config /tmp/client.properties \
@@ -51,4 +56,3 @@ kafka-console-consumer.sh \
     --topic test \
     --from-beginning
 ```
-
