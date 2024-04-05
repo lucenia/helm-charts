@@ -1,0 +1,17 @@
+{{- if .Values.maxUnavailable }}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: policy/v1
+{{- else -}}
+apiVersion: policy/v1beta1
+{{- end }}
+kind: PodDisruptionBudget
+metadata:
+  name: "{{ template "skylite.uname" . }}-pdb"
+  labels:
+    {{- include "skylite.labels" . | nindent 4 }}
+spec:
+  maxUnavailable: {{ .Values.maxUnavailable }}
+  selector:
+    matchLabels:
+      {{- include "skylite.selectorLabels" . | nindent 6 }}
+{{- end }}
