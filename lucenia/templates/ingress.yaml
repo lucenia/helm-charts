@@ -1,9 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "skylite.serviceName" . -}}
+{{- $fullName := include "lucenia.serviceName" . -}}
 {{- $servicePort := .Values.httpPort -}}
 {{- $ingressPath := .Values.ingress.path -}}
-{{- $ingressApiIsStable := eq (include "skylite.ingress.isStable" .) "true" -}}
-{{- $ingressSupportsIngressClassName := eq (include "skylite.ingress.supportsIngressClassName" .) "true" -}}
+{{- $ingressApiIsStable := eq (include "lucenia.ingress.isStable" .) "true" -}}
+{{- $ingressSupportsIngressClassName := eq (include "lucenia.ingress.supportsIngressClassName" .) "true" -}}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -15,7 +15,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "skylite.labels" . | nindent 4 }}
+    {{- include "lucenia.labels" . | nindent 4 }}
     {{- with .Values.ingress.ingressLabels }}
       {{- toYaml . | nindent 4 }}
     {{- end }}

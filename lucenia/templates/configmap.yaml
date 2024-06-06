@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "skylite.uname" . }}-config
+  name: {{ template "lucenia.uname" . }}-config
   labels:
-    {{- include "skylite.labels" . | nindent 4 }}
+    {{- include "lucenia.labels" . | nindent 4 }}
 data:
 {{- range $configName, $configYaml := .Values.config }}
   {{ $configName }}: |

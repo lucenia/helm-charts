@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "skylite.uname" . }}
+  name: {{ template "lucenia.uname" . }}
   labels:
-    {{- include "skylite.labels" . | nindent 4 }}
+    {{- include "lucenia.labels" . | nindent 4 }}
   annotations:
-    majorVersion: "{{ include "skylite.majorVersion" . }}"
-    {{- with .Values.skyliteAnnotations }}
+    majorVersion: "{{ include "lucenia.majorVersion" . }}"
+    {{- with .Values.luceniaAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  serviceName: {{ template "skylite.serviceName" . }}-headless
+  serviceName: {{ template "lucenia.serviceName" . }}-headless
   selector:
     matchLabels:
-      {{- include "skylite.selectorLabels" . | nindent 6 }}
+      {{- include "lucenia.selectorLabels" . | nindent 6 }}
   {{- if .Values.singleNode }}
   replicas: 1
   {{- else }}
@@ -26,10 +26,10 @@ spec:
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
-      name: {{ template "skylite.uname" . }}
+      name: {{ template "lucenia.uname" . }}
     {{- if .Values.persistence.labels.enabled }}
       labels:
-        {{- include "skylite.labels" . | nindent 8 }}
+        {{- include "lucenia.labels" . | nindent 8 }}
     {{- end }}
     {{- with .Values.persistence.annotations  }}
       annotations:
@@ -53,9 +53,9 @@ spec:
   {{- end }}
   template:
     metadata:
-      name: "{{ template "skylite.uname" . }}"
+      name: "{{ template "lucenia.uname" . }}"
       labels:
-        {{- include "skylite.labels" . | nindent 8 }}
+        {{- include "lucenia.labels" . | nindent 8 }}
       annotations:
         {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
@@ -79,7 +79,7 @@ spec:
           value: {{ .Values.sysctlVmMaxMapCount | quote }}
         {{- end }}
       {{- if and .Values.rbac.create (eq .Values.rbac.serviceAccountName "") }}
-      serviceAccountName: "{{ template "skylite.uname" . }}"
+      serviceAccountName: "{{ template "lucenia.uname" . }}"
       automountServiceAccountToken: {{ ne .Values.rbac.automountServiceAccountToken false }}
       {{- else if and .Values.rbac.create (ne .Values.rbac.serviceAccountName "") }}
       serviceAccountName: {{ .Values.rbac.serviceAccountName | quote }}
@@ -115,7 +115,7 @@ spec:
               - key: app.kubernetes.io/name
                 operator: In
                 values:
-                - {{ include "skylite.name" . }}
+                - {{ include "lucenia.name" . }}
             topologyKey: {{ .Values.antiAffinityTopologyKey }}
       {{- else if eq .Values.antiAffinity "soft" }}
         podAntiAffinity:
@@ -132,7 +132,7 @@ spec:
                 - key: app.kubernetes.io/name
                   operator: In
                   values:
-                  - {{ include "skylite.name" . }}
+                  - {{ include "lucenia.name" . }}
       {{- else if eq .Values.antiAffinity "custom" }}
         {{- with .Values.customAntiAffinity }}
         podAntiAffinity:
@@ -156,7 +156,7 @@ spec:
       {{- if .Values.config }}
       - name: config
         configMap:
-          name: {{ template "skylite.uname" . }}-config
+          name: {{ template "lucenia.uname" . }}-config
       - emptyDir: {}
         name: config-emptydir
       {{- end }}
@@ -174,7 +174,7 @@ spec:
       {{- if .Values.securityConfig.config.data }}
       - name: security-config-data
         secret:
-          secretName: {{ include "skylite.uname" . }}-securityconfig
+          secretName: {{ include "lucenia.uname" . }}-securityconfig
       {{- end }}
       {{- with .Values.securityConfig.config.securityConfigSecret }}
       - name: security-config-complete
@@ -241,22 +241,22 @@ spec:
       initContainers:
 {{- if and .Values.persistence.enabled .Values.persistence.enableInitChown }}
       - name: fsgroup-volume
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.persistence.image | default "busybox" }}:{{ .Values.persistence.imageTag | default "latest" }}"
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.persistence.image | default "busybox" }}:{{ .Values.persistence.imageTag | default "latest" }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command: ['sh', '-c']
         args:
-          - 'chown -R 1000:1000 /usr/share/opensearch/data'
+          - 'chown -R 1000:1000 /usr/share/lucenia/data'
         securityContext:
           runAsUser: 0
         resources:
           {{- toYaml .Values.initResources | nindent 10 }}
         volumeMounts:
-          - name: "{{ template "skylite.uname" . }}"
-            mountPath: {{ .Values.skyliteHome }}/data
+          - name: "{{ template "lucenia.uname" . }}"
+            mountPath: {{ .Values.luceniaHome }}/data
 {{- end }}
 {{- if .Values.sysctlInit.enabled }}
       - name: sysctl
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.sysctlInit.image | default "busybox" }}:{{ .Values.sysctlInit.imageTag | default "latest" }}"
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.sysctlInit.image | default "busybox" }}:{{ .Values.sysctlInit.imageTag | default "latest" }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command:
         - sh
@@ -276,7 +276,7 @@ spec:
 {{- end }}
 {{- if .Values.config }}
       - name: configfile
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command:
         - sh
@@ -297,7 +297,7 @@ spec:
 {{- end }}
 {{- if .Values.keystore }}
       - name: keystore
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command:
         - sh
@@ -306,22 +306,22 @@ spec:
           #!/usr/bin/env bash
           set -euo pipefail
 
-          {{ .Values.skyliteHome }}/bin/opensearch-keystore create
+          {{ .Values.luceniaHome }}/bin/lucenia-keystore create
 
           for i in /tmp/keystoreSecrets/*/*; do
             [ -f "$i" ] || continue
             key=$(basename $i)
             echo "Adding file $i to keystore key $key"
-            {{ .Values.skyliteHome }}/bin/opensearch-keystore add-file "$key" "$i"
+            {{ .Values.luceniaHome }}/bin/lucenia-keystore add-file "$key" "$i"
           done
 
-          # Add the bootstrap password since otherwise the opensearch entrypoint tries to do this on startup
+          # Add the bootstrap password since otherwise the lucenia entrypoint tries to do this on startup
           if [ ! -z ${PASSWORD+x} ]; then
             echo 'Adding env $PASSWORD to keystore as key bootstrap.password'
-            echo "$PASSWORD" | {{ .Values.skyliteHome }}/bin/opensearch-keystore add -x bootstrap.password
+            echo "$PASSWORD" | {{ .Values.luceniaHome }}/bin/lucenia-keystore add -x bootstrap.password
           fi
 
-          cp -a {{ .Values.skyliteHome }}/config/opensearch.keystore /tmp/keystore/
+          cp -a {{ .Values.luceniaHome }}/config/lucenia.keystore /tmp/keystore/
         env: {{ toYaml .Values.extraEnvs | nindent 10 }}
         envFrom: {{ toYaml .Values.envFrom | nindent 10 }}
         resources:
@@ -346,7 +346,7 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-      - name: "{{ template "skylite.name" . }}"
+      - name: "{{ template "lucenia.name" . }}"
         securityContext:
 {{ toYaml .Values.securityContext | indent 10 }}
       {{- if .Values.plugins.enabled }}
@@ -358,13 +358,13 @@ spec:
           set -euo pipefail
 
           {{- range $plugin := .Values.plugins.installList }}
-          ./bin/opensearch-plugin install -b {{ $plugin }}
+          ./bin/lucenia-plugin install -b {{ $plugin }}
           {{- end }}
 
-          bash opensearch-docker-entrypoint.sh
+          bash lucenia-docker-entrypoint.sh
       {{- end }}
 
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         readinessProbe:
 {{ toYaml .Values.readinessProbe | indent 10 }}
@@ -398,18 +398,18 @@ spec:
               fieldPath: metadata.name
         {{- if (and (has "master" .Values.roles) (not .Values.singleNode)) }}
         - name: cluster.initial_master_nodes
-          value: "{{ template "skylite.endpoints" . }}"
+          value: "{{ template "lucenia.endpoints" . }}"
         {{- end }}
         - name: discovery.seed_hosts
-          value: "{{ template "skylite.managerService" . }}-headless"
+          value: "{{ template "lucenia.managerService" . }}-headless"
         - name: cluster.name
           value: "{{ .Values.clusterName }}"
         - name: network.host
           value: "{{ .Values.networkHost }}"
-        - name: OPENSEARCH_JAVA_OPTS
-          value: "{{ .Values.skyliteJavaOpts }}"
+        - name: LUCENIA_JAVA_OPTS
+          value: "{{ .Values.luceniaJavaOpts }}"
         - name: node.roles
-          value: "{{ template "skylite.roles" . }}"
+          value: "{{ template "lucenia.roles" . }}"
         {{- if .Values.singleNode }}
         - name: discovery.type
           value: "single-node"
@@ -421,19 +421,19 @@ spec:
         envFrom:
 {{ toYaml .Values.envFrom | indent 8 }}
 {{- end }}
-{{- if .Values.skyliteLifecycle }}
+{{- if .Values.luceniaLifecycle }}
         lifecycle:
-{{ toYaml .Values.skyliteLifecycle | indent 10 }}
+{{ toYaml .Values.luceniaLifecycle | indent 10 }}
 {{- end }}
         volumeMounts:
         {{- if .Values.persistence.enabled }}
-        - name: "{{ template "skylite.uname" . }}"
-          mountPath: {{ .Values.skyliteHome }}/data
+        - name: "{{ template "lucenia.uname" . }}"
+          mountPath: {{ .Values.luceniaHome }}/data
         {{- end }}
         {{- if .Values.keystore }}
         - name: keystore
-          mountPath: {{ .Values.skyliteHome }}/config/opensearch.keystore
-          subPath: opensearch.keystore
+          mountPath: {{ .Values.luceniaHome }}/config/lucenia.keystore
+          subPath: lucenia.keystore
         {{- end }}
         {{- if .Values.securityConfig.enabled }}
         {{- if .Values.securityConfig.actionGroupsSecret }}
@@ -491,7 +491,7 @@ spec:
         {{- end }}
         {{- range $path, $config := .Values.config }}
         - name: config-emptydir
-          mountPath: {{ $.Values.skyliteHome }}/config/{{ $path }}
+          mountPath: {{ $.Values.luceniaHome }}/config/{{ $path }}
           subPath: {{ $path }}
         {{- end -}}
         {{- if .Values.extraVolumeMounts }}
@@ -507,8 +507,8 @@ spec:
       {{- if .Values.managerTerminationFix }}
       {{- if has "master" .Values.roles }}
       # This sidecar will prevent slow manager re-election
-      - name: skylite-manager-graceful-termination-handler
-        image: "{{ template "skylite.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      - name: lucenia-manager-graceful-termination-handler
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command:
         - "sh"
@@ -524,13 +524,13 @@ spec:
               else
                 BASIC_AUTH=''
               fi
-              curl -XGET -s -k --fail ${BASIC_AUTH} {{ .Values.protocol }}://{{ template "skylite.managerService" . }}:{{ .Values.httpPort }}${path}
+              curl -XGET -s -k --fail ${BASIC_AUTH} {{ .Values.protocol }}://{{ template "lucenia.managerService" . }}:{{ .Values.httpPort }}${path}
           }
 
           cleanup () {
             while true ; do
               local master="$(http "/_cat/master?h=node" || echo "")"
-              if [[ $master == "{{ template "skylite.managerService" . }}"* && $master != "${NODE_NAME}" ]]; then
+              if [[ $master == "{{ template "lucenia.managerService" . }}"* && $master != "${NODE_NAME}" ]]; then
                 echo "This node is not master."
                 break
               fi

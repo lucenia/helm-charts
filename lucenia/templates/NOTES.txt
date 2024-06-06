@@ -1,2 +1,2 @@
 Watch all cluster members come up.
-  $ kubectl get pods --namespace={{ .Release.Namespace }} -l app.kubernetes.io/component={{ template "skylite.uname" . }} -w
+  $ kubectl get pods --namespace={{ .Release.Namespace }} -l app.kubernetes.io/component={{ template "lucenia.uname" . }} -w

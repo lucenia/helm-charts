@@ -1,6 +1,6 @@
 apiVersion: v2
-name: skylite
-description: A Helm chart for skylite
+name: lucenia
+description: A Helm chart for lucenia
 
 # A chart can be either an 'application' or a 'library' chart.
 #
