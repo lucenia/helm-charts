@@ -1,0 +1,17 @@
+{{- if .Values.networkPolicy.create -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "lucenia.uname" . }}-lucenia-net
+  labels:
+    {{- include "lucenia.labels" . | nindent 4 }}
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{ template "lucenia.uname" . }}-transport-client: "true"
+  podSelector:
+    matchLabels:
+      {{ template "lucenia.uname" . }}-transport-client: "true"
+{{- end }}

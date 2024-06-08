@@ -2,9 +2,9 @@
 
 This repository contains the Helm charts for Lucenia's products.
 
-## Skylite
+## Lucenia
 
-The [Skylite Helm chart](./skylite) defines resources for deploying Skylite on Kubernetes. See the [Skylite documentation](./skylite/README.md) and [values](./skylite/values.yaml) for more information on configuring and deploying Skylite.
+The [Lucenia Helm chart](./lucenia) defines resources for deploying Lucenia on Kubernetes. See the [Lucenia documentation](./lucenia/README.md) and [values](./lucenia/values.yaml) for more information on configuring and deploying Lucenia.
 
 ## Kafka
 

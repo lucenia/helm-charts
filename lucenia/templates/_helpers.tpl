@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "skylite.name" -}}
+{{- define "lucenia.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "skylite.fullname" -}}
+{{- define "lucenia.fullname" -}}
 {{- if contains .Chart.Name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -22,21 +22,21 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "skylite.chart" -}}
+{{- define "lucenia.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "skylite.labels" -}}
-helm.sh/chart: {{ include "skylite.chart" . }}
-{{ include "skylite.selectorLabels" . }}
+{{- define "lucenia.labels" -}}
+helm.sh/chart: {{ include "lucenia.chart" . }}
+{{ include "lucenia.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/component: {{ include "skylite.uname" . }}
+app.kubernetes.io/component: {{ include "lucenia.uname" . }}
 {{- with .Values.labels }}
 {{ toYaml . }}
 {{- end }}
@@ -45,12 +45,12 @@ app.kubernetes.io/component: {{ include "skylite.uname" . }}
 {{/*
 Selector labels
 */}}
-{{- define "skylite.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "skylite.name" . }}
+{{- define "lucenia.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "lucenia.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "skylite.uname" -}}
+{{- define "lucenia.uname" -}}
 {{- if empty .Values.fullnameOverride -}}
 {{- if empty .Values.nameOverride -}}
 {{ .Values.clusterName }}-{{ .Values.nodeGroup }}
@@ -62,7 +62,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
-{{- define "skylite.managerService" -}}
+{{- define "lucenia.managerService" -}}
 {{- if empty .Values.managerService -}}
 {{- if empty .Values.fullnameOverride -}}
 {{- if empty .Values.nameOverride -}}
@@ -78,23 +78,23 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
-{{- define "skylite.serviceName" -}}
+{{- define "lucenia.serviceName" -}}
 {{- if eq .Values.nodeGroup "manager" }}
-{{- include "skylite.managerService" . }}
+{{- include "lucenia.managerService" . }}
 {{- else }}
-{{- include "skylite.uname" . }}
+{{- include "lucenia.uname" . }}
 {{- end }}
 {{- end -}}
 
-{{- define "skylite.endpoints" -}}
+{{- define "lucenia.endpoints" -}}
 {{- $replicas := int (toString (.Values.replicaCount)) }}
-{{- $uname := (include "skylite.uname" .) }}
+{{- $uname := (include "lucenia.uname" .) }}
   {{- range $i, $e := untilStep 0 $replicas 1 -}}
 {{ $uname }}-{{ $i }},
   {{- end -}}
 {{- end -}}
 
-{{- define "skylite.majorVersion" -}}
+{{- define "lucenia.majorVersion" -}}
 {{- if .Values.majorVersion }}
   {{- .Values.majorVersion }}
 {{- else }}
@@ -103,7 +103,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 {{- end }}
 
-{{- define "skylite.dockerRegistry" -}}
+{{- define "lucenia.dockerRegistry" -}}
 {{- if eq .Values.global.dockerRegistry "" -}}
   {{- .Values.global.dockerRegistry -}}
 {{- else -}}
@@ -111,7 +111,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
-{{- define "skylite.roles" -}}
+{{- define "lucenia.roles" -}}
 {{- range $.Values.roles -}}
 {{ . }},
 {{- end -}}
@@ -120,7 +120,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/*
 Return the appropriate apiVersion for ingress.
 */}}
-{{- define "skylite.ingress.apiVersion" -}}
+{{- define "lucenia.ingress.apiVersion" -}}
   {{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= 1.19-0" .Capabilities.KubeVersion.Version) -}}
       {{- print "networking.k8s.io/v1" -}}
   {{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
@@ -133,12 +133,12 @@ Return the appropriate apiVersion for ingress.
 {{/*
 Return if ingress is stable.
 */}}
-{{- define "skylite.ingress.isStable" -}}
-  {{- eq (include "skylite.ingress.apiVersion" .) "networking.k8s.io/v1" -}}
+{{- define "lucenia.ingress.isStable" -}}
+  {{- eq (include "lucenia.ingress.apiVersion" .) "networking.k8s.io/v1" -}}
 {{- end -}}
 {{/*
 Return if ingress supports ingressClassName.
 */}}
-{{- define "skylite.ingress.supportsIngressClassName" -}}
-  {{- or (eq (include "skylite.ingress.isStable" .) "true") (and (eq (include "skylite.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" .Capabilities.KubeVersion.Version)) -}}
+{{- define "lucenia.ingress.supportsIngressClassName" -}}
+  {{- or (eq (include "lucenia.ingress.isStable" .) "true") (and (eq (include "lucenia.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" .Capabilities.KubeVersion.Version)) -}}
 {{- end -}}
