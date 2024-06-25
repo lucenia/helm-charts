@@ -399,8 +399,6 @@ securityConfig:
 # Grace period to wait for Lucenia to stop gracefully
 terminationGracePeriodSeconds: 120
 
-sysctlVmMaxMapCount: 262144
-
 startupProbe:
   tcpSocket:
     port: 9200
@@ -517,6 +515,17 @@ sysctlInit:
   # image: busybox
   # override image tag, which is latest by default
   # imageTag:
+# sysctlVmMaxMapCount to set through sysctlInit initContainer
+sysctlVmMaxMapCount: 262144
+
+ulimitInit:
+  enabled: false
+  # override image, which is busybox by default
+  # image: busybox
+  # override image tag, which is latest by default
+  # imageTag:
+# ulimitCount to set through ulimitInit initContainer
+ulimitCount: 65536
 
 ## Enable to add 3rd Party / Custom plugins not offered in the default image.
 plugins:

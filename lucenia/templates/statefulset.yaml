@@ -274,6 +274,26 @@ spec:
         resources:
           {{- toYaml .Values.initResources | nindent 10 }}
 {{- end }}
+{{- if .Values.ulimitInit }}
+      - name: ulimit
+        image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.sysctlInit.image | default "busybox" }}:{{ .Values.sysctlInit.imageTag | default "latest" }}"
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        command:
+        - sh
+        - -c
+        - |
+          set -xe
+          DESIRED="{{ .Values.ulimitCount }}"
+          CURRENT=$(ulimit -n)
+          if [ "$DESIRED" -gt "$CURRENT" ]; then
+            ulimit -n $DESIRED
+          fi
+        securityContext:
+          runAsUser: 0
+          privileged: true
+        resources:
+          {{- toYaml .Values.initResources | nindent 10 }}
+{{- end }}
 {{- if .Values.config }}
       - name: configfile
         image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
