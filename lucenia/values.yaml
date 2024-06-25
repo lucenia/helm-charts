@@ -51,6 +51,12 @@ config:
   #
   #   rootLogger.level = info
   #   rootLogger.appenderRef.console.ref = console
+  esnode.pem: |
+    placeholder: create demo cert file
+  esnode-key.pem: |
+    placeholder: create demo cert file
+  root-ca.pem: |
+    placeholder: create demo cert file
   lucenia.yml: |
     cluster.name: lucenia-cluster
 
