@@ -115,7 +115,7 @@ config:
 extraEnvs: []
 #  - name: MY_ENVIRONMENT_VAR
 #    value: the_value_goes_here
-# Starting with Chart Version 2.18.0 and App Version 2.12.0 a custom strong password must be set in order to setup demo admin user.
+# A custom strong password must be set in order to setup a demo admin user.
 # Lucenia cluster will not spin-up without this unless demo config install is disabled.
 #  - name: LUCENIA_INITIAL_ADMIN_PASSWORD
 #    value: <strong-password>
