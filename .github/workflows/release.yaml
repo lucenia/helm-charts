@@ -26,8 +26,8 @@ jobs:
           mkdir "$gpg_dir"
           keyring="$gpg_dir/secring.gpg"
           base64 -d <<< "$GPG_KEYRING_BASE64" > "$keyring"
-          passphrase_file="$gpgdir/passphrase"
-          echo "$RElEASE_PHRASE" > "$passphrase_file"
+          passphrase_file="$gpg_dir/passphrase"
+          echo "$RELEASE_PHRASE" > "$passphrase_file"
           echo "CR_PASSPHRASE_FILE=$passphrase_file" >> "$GITHUB_ENV"
           echo "CR_KEYRING=$keyring" >> "$GITHUB_ENV"
         env:
