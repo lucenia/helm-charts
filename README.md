@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/3514b84e-aa9e-4e7d-a357-054146f82024" height="84px">
+<img src="https://lucenia.io/wp-content/uploads/2024/07/Asset_38Lucenia_H_LB_NS.png" height="84px">
 
 - [Lucenia Helm-Charts](#lucenia-helm-charts)
 - [Status](#status)
