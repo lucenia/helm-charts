@@ -39,4 +39,4 @@ jobs:
           CR_KEYRING: keyring.gpg
           CR_PASSPHRASE_FILE: passphrase-file.txt
           CR_SIGN: true
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_TOKEN: "${{ secrets.HELM_CHART_RELEASE_TOKEN }}"
