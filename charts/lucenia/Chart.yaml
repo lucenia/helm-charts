@@ -1,6 +1,6 @@
 apiVersion: v2
 name: lucenia
-description: A Helm chart for lucenia
+description: A Helm chart for Lucenia
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -12,7 +12,7 @@ description: A Helm chart for lucenia
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
 
-# This is the chart version. This version number should be incremented each time you make changes
+# This is the lucenia chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 0.1.0
