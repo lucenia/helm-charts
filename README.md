@@ -16,8 +16,8 @@ The [Lucenia Helm chart](./lucenia) defines resources for deploying Lucenia on K
 
 ## Status
 
-[![Lint and Test Charts](https://github.com/opensearch-project/helm-charts/actions/workflows/lint-test.yaml/badge.svg)](https://github.com/opensearch-project/helm-charts/actions/workflows/lint-test.yaml)
- [![Release Charts](https://github.com/opensearch-project/helm-charts/actions/workflows/release.yaml/badge.svg)](https://github.com/opensearch-project/helm-charts/actions/workflows/release.yaml)
+[![Lint and Test Charts](https://github.com/lucenia/helm-charts/actions/workflows/lint-test.yaml/badge.svg)](https://github.com/lucenia/helm-charts/actions/workflows/lint-test.yaml)
+ [![Release Charts](https://github.com/lucenia/helm-charts/actions/workflows/release.yaml/badge.svg)](https://github.com/lucenia/helm-charts/actions/workflows/release.yaml)
 
 ## Version and Branching
 As of now, this helm-charts repository maintains two branches:
