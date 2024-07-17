@@ -21,18 +21,9 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Prepare GPG Key
-        run: | 
-          gpg_dir=.cr-gpg
-          mkdir "$gpg_dir"
-          keyring="$gpg_dir/secring.gpg"
-          base64 -d <<< "$GPG_KEYRING_BASE64" > "$keyring"
-          passphrase_file="$gpg_dir/passphrase"
-          echo "$RELEASE_PHRASE" > "$passphrase_file"
-          echo "CR_PASSPHRASE_FILE=$passphrase_file" >> "$GITHUB_ENV"
-          echo "CR_KEYRING=$keyring" >> "$GITHUB_ENV"
-        env:
-          GPG_KEYRING_BASE64: "${{ secrets.GPG_KEYRING_BASE64 }}"
-          GPG_PASSPHRASE: "${{ secrets.RELEASE_PHRASE }}"
+        run: |
+          echo "${{ secrets.RELEASE_SECRET }}" | gpg --dearmor --output keyring.gpg
+          echo "${{ secrets.RELEASE_PHRASE }}" > passphrase-file.txt
 
       - name: Install Helm
         uses: azure/setup-helm@v1
@@ -42,8 +33,10 @@ jobs:
       # See https://github.com/helm/chart-releaser
       # See https://github.com/helm/chart-releaser-action
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.2.1
-        with:
-          config: cr.yaml
+        uses: helm/chart-releaser-action@v1.3.0
         env:
+          CR_KEY: Lucenia Dev (RELEASE SIGNING KEY) <dev@lucenia.io>
+          CR_KEYRING: keyring.gpg
+          CR_PASSPHRASE_FILE: passphrase-file.txt
+          CR_SIGN: true
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
