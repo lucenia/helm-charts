@@ -22,7 +22,7 @@ jobs:
 
       - name: Prepare GPG Key
         run: | 
-          gpg_cir=.cr-gpg
+          gpg_dir=.cr-gpg
           mkdir "$gpg_dir"
           keyring="$gpg_dir/secring.gpg"
           base64 -d <<< "$GPG_KEYRING_BASE64" > "$keyring"
