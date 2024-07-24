@@ -416,8 +416,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        {{- if (and (has "master" .Values.roles) (not .Values.singleNode)) }}
-        - name: cluster.initial_master_nodes
+        {{- if (and (has "cluster_manager" .Values.roles) (not .Values.singleNode)) }}
+        - name: cluster.initial_cluster_manager_nodes
           value: "{{ template "lucenia.endpoints" . }}"
         {{- end }}
         - name: discovery.seed_hosts
@@ -525,9 +525,9 @@ spec:
         {{- end }}
         {{- end }}
       {{- if .Values.managerTerminationFix }}
-      {{- if has "master" .Values.roles }}
-      # This sidecar will prevent slow manager re-election
-      - name: lucenia-manager-graceful-termination-handler
+      {{- if has "cluster_manager" .Values.roles }}
+      # This sidecar will prevent slow cluster_manager re-election
+      - name: lucenia-cluster_manager-graceful-termination-handler
         image: "{{ template "lucenia.dockerRegistry" . }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         command:
@@ -549,12 +549,12 @@ spec:
 
           cleanup () {
             while true ; do
-              local master="$(http "/_cat/master?h=node" || echo "")"
-              if [[ $master == "{{ template "lucenia.managerService" . }}"* && $master != "${NODE_NAME}" ]]; then
-                echo "This node is not master."
+              local cluster_manager="$(http "/_cat/cluster_manager?h=node" || echo "")"
+              if [[ $cluster_manager == "{{ template "lucenia.managerService" . }}"* && $cluster_manager != "${NODE_NAME}" ]]; then
+                echo "This node is not cluster_manager."
                 break
               fi
-              echo "This node is still master, waiting gracefully for it to step down"
+              echo "This node is still cluster_manager, waiting gracefully for it to step down"
               sleep 1
             done
 

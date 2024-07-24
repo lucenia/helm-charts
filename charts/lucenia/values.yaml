@@ -17,12 +17,13 @@ replicaCount: 3
 
 # roles represent the Lucenia node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
-# For example, node.roles=master,ingest,data,remote_cluster_client
+# For example, node.roles=cluster_manager,ingest,data,remote_cluster_client,search
 roles:
-  - master
+  - cluster_manager
   - ingest
   - data
   - remote_cluster_client
+  - search
 
 # majorVersion is the major version of Lucenia to deploy; set this when using a custom image
 # If not set, majorVersion defaults to .Values.imageTag, then .Chart.AppVersion
@@ -51,9 +52,9 @@ config:
   #
   #   rootLogger.level = info
   #   rootLogger.appenderRef.console.ref = console
-  esnode.pem: |
+  node.pem: |
     placeholder: create demo cert file
-  esnode-key.pem: |
+  node-key.pem: |
     placeholder: create demo cert file
   root-ca.pem: |
     placeholder: create demo cert file
@@ -70,17 +71,19 @@ config:
     # Start Lucenia Security Demo Configuration
     # WARNING: revise all the lines below before you go into production
     plugins:
+      license:
+        certificate_filepath: license/license.crt
       security:
         ssl:
           transport:
-            pemcert_filepath: esnode.pem
-            pemkey_filepath: esnode-key.pem
+            pemcert_filepath: node.pem
+            pemkey_filepath: node-key.pem
             pemtrustedcas_filepath: root-ca.pem
             enforce_hostname_verification: false
           http:
             enabled: true
-            pemcert_filepath: esnode.pem
-            pemkey_filepath: esnode-key.pem
+            pemcert_filepath: node.pem
+            pemkey_filepath: node-key.pem
             pemtrustedcas_filepath: root-ca.pem
         allow_unsafe_democertificates: true
         allow_default_init_securityindex: true
@@ -93,19 +96,10 @@ config:
         restapi:
           roles_enabled: ["all_access", "security_rest_api_access"]
         system_indices:
-          enabled: true
+          enabled: false
           indices:
             [
-              ".opendistro-alerting-config",
-              ".opendistro-alerting-alert*",
-              ".opendistro-anomaly-results*",
-              ".opendistro-anomaly-detector*",
-              ".opendistro-anomaly-checkpoints",
-              ".opendistro-anomaly-detection-state",
-              ".opendistro-reports-*",
-              ".opendistro-notifications-*",
-              ".opendistro-notebooks",
-              ".opendistro-asynchronous-search-response*",
+              # define list of indices that are managed by security
             ]
     ######## End Lucenia Security Demo Configuration ########
   # log4j2.properties:
@@ -141,7 +135,7 @@ hostAliases: []
 # image is the Lucenia Docker image
 image:
   # repository is the image repository and name
-  repository: "registry.digitalocean.com/lucenia/lucenia"
+  repository: "lucenia/lucenia"
   # pullPolicy is the Kubernetes imagePullPolicy
   pullPolicy: IfNotPresent
   # tag overrides the image tag whose default is the chart appVersion.
