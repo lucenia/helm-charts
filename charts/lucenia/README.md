@@ -132,7 +132,7 @@ The following table lists the configurable parameters of the Lucenia chart and t
 [deploys statefulsets serially]: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
 [securityContext]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 [priorityClass]: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
-[roles]: https://opensearch.org/docs/opensearch/cluster/
+[roles]: https://lucenia.io/docs/lucenia/cluster/
 [alternate scheduler]: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/#specify-schedulers-for-pods
 [loadBalancer annotations]: https://kubernetes.io/docs/concepts/services-networking/service/#ssl-support-on-aws
 [loadBalancer externalTrafficPolicy]: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
@@ -140,8 +140,8 @@ The following table lists the configurable parameters of the Lucenia chart and t
 [maxUnavailable]: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
 [nodePort]: https://kubernetes.io/docs/concepts/services-networking/service/#nodeport
 [nodeSelector]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
-[vm.max_map_count]: https://opensearch.org/docs/opensearch/install/important-settings/
-[ulimit]: https://opensearch.org/docs/opensearch/install/important-settings/
+[vm.max_map_count]: https://lucenia.io/docs/lucenia/install/important-settings/
+[ulimit]: https://lucenia.io/docs/lucenia/install/important-settings/
 [terminationGracePeriod]: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
 [tolerations]: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 [updateStrategy]: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
