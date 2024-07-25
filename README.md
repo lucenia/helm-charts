@@ -55,7 +55,7 @@ helm install my-deployment lucenia/<chart name>
 ```
 
 Please see the `README.md` in the [Lucenia](charts/lucenia) directory for installation instructions.
-
+<!--
 ## Kafka
 
 Kafka can be accessed by consumers via port 9092 on the following DNS name from within your cluster:
@@ -100,6 +100,7 @@ kafka-console-producer.sh \
 CONSUMER:
 
 ```bash
+-->
 kafka-console-consumer.sh \
     --consumer.config /tmp/client.properties \
     --bootstrap-server lucenia-kafka.lucenia.svc.cluster.local:9092 \
