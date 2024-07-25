@@ -238,7 +238,7 @@ persistence:
   # If storageClass is set to "-", storageClassName: "", which disables dynamic provisioning
   # If undefined (the default) or set to null, no storageClassName spec is set,
   #   choosing the default provisioner.
-  #
+
   # storageClass: "-"
   accessModes:
     - ReadWriteOnce
