@@ -17,13 +17,12 @@ replicaCount: 3
 
 # roles represent the Lucenia node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
-# For example, node.roles=cluster_manager,ingest,data,remote_cluster_client,search
+# For example, node.roles=cluster_manager,ingest,data,remote_cluster_client
 roles:
   - cluster_manager
   - ingest
   - data
   - remote_cluster_client
-  - search
 
 # majorVersion is the major version of Lucenia to deploy; set this when using a custom image
 # If not set, majorVersion defaults to .Values.imageTag, then .Chart.AppVersion
@@ -497,8 +496,8 @@ networkPolicy: # todo - confirm in testing
     enabled: false
 
 ## Set optimal sysctl's through securityContext. This requires privilege. Can be disabled if
-## the system has already been preconfigured. (Ex: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html)
-## Also see: https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
+## the system has already been preconfigured.
+## https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
 sysctl:
   enabled: false
 
