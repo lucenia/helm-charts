@@ -420,7 +420,6 @@ readinessProbe:
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 schedulerName: ""
 
-imagePullSecrets: []
 nodeSelector: {}
 tolerations: []
 
@@ -443,9 +442,6 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
-nameOverride: ""
-fullnameOverride: ""
 
 # Set to true to prevent slow manager node re-election
 managerTerminationFix: false
