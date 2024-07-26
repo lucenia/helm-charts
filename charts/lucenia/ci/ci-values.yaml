@@ -108,7 +108,7 @@ config:
 # Will be appended to the current 'env:' key. You can use any kubernetes env syntax
 extraEnvs:
   - name: LUCENIA_INITIAL_ADMIN_PASSWORD
-    value: myStrongPassword123! 
+    value: myStrongPassword123!
 #  - name: MY_ENVIRONMENT_VAR
 #    value: the_value_goes_here
 # A custom strong password must be set in order to setup a demo admin user.
