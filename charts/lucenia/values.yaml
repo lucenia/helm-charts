@@ -152,7 +152,7 @@ fullnameOverride: ""
 
 # podAnnotations is used to add annotations to all Lucenia pods
 podAnnotations: {}
-  # "key": "value"
+#   "key": "value"
 
 # luceniaAnnotations adds annotations to the Lucenia Statefulset
 luceniaAnnotations: {}
@@ -247,26 +247,26 @@ persistence:
 
 # extraVolumes is used to add extra volumes to the Lucenia StatefulSet
 extraVolumes: []
-  # - name: extras
-  #   emptyDir: {}
+#   - name: extras
+#     emptyDir: {}
 
 # extraVolumeMounts is used to add extra volume mounts to the Lucenia StatefulSet
 extraVolumeMounts: []
-  # - name: extras
-  #   mountPath: /usr/share/extras
-  #   readOnly: true
+#   - name: extras
+#     mountPath: /usr/share/extras
+#     readOnly: true
 
 # extraContainers is used to add containers to the Lucenia StatefulSet
 extraContainers: []
-  # - name: do-something
-  #   image: busybox
-  #   command: ['do', 'something']
+#   - name: do-something
+#     image: busybox
+#     command: ['do', 'something']
 
 # extraInitContainers is used to add init containers to the Lucenia StatefulSet
 extraInitContainers: []
-  # - name: do-somethings
-  #   image: busybox
-  #   command: ['do', 'something']
+#   - name: do-somethings
+#     image: busybox
+#     command: ['do', 'something']
 
 # This is the PriorityClass settings as defined in
 # https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
@@ -382,12 +382,12 @@ securityConfig:
     securityConfigSecret: ""
     dataComplete: true
     data: {}
-      # config.yml: |-
-      # internal_users.yml: |-
-      # roles.yml: |-
-      # roles_mapping.yml: |-
-      # action_groups.yml: |-
-      # tenants.yml: |-
+    #   config.yml: |-
+    #   internal_users.yml: |-
+    #   roles.yml: |-
+    #   roles_mapping.yml: |-
+    #   action_groups.yml: |-
+    #   tenants.yml: |-
 
 # Grace period to wait for Lucenia to stop gracefully
 terminationGracePeriodSeconds: 120
@@ -401,13 +401,13 @@ startupProbe:
   failureThreshold: 30
 
 livenessProbe: {}
-  # periodSeconds: 20
-  # timeoutSeconds: 5
-  # failureThreshold: 10
-  # successThreshold: 1
-  # initialDelaySeconds: 10
-  # tcpSocket:
-  #   port: 9200
+#   periodSeconds: 20
+#   timeoutSeconds: 5
+#   failureThreshold: 10
+#   successThreshold: 1
+#   initialDelaySeconds: 10
+#   tcpSocket:
+#     port: 9200
 
 readinessProbe:
   tcpSocket:
@@ -432,8 +432,8 @@ ingress:
   # ingressClassName: nginx
 
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  #   kubernetes.io/ingress.class: nginx
+  #   kubernetes.io/tls-acme: "true"
   ingressLabels: {}
   path: /
   hosts:
@@ -447,38 +447,38 @@ ingress:
 managerTerminationFix: false
 
 luceniaLifecycle: {}
-  # preStop:
-  #   exec:
-  #     command: ["/bin/sh", "-c", "echo Hello from the preStart handler > /usr/share/message"]
-  # postStart:
-  #   exec:
-  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+#   preStop:
+#     exec:
+#       command: ["/bin/sh", "-c", "echo Hello from the preStart handler > /usr/share/message"]
+#   postStart:
+#     exec:
+#       command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
 
 lifecycle: {}
-  # preStop:
-  #   exec:
-  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
-  # postStart:
-  #   exec:
-  #     command:
-  #       - bash
-  #       - -c
-  #       - |
-  #         #!/bin/bash
-  #         # Add a template to adjust number of shards/replicas1
-  #         TEMPLATE_NAME=my_template
-  #         INDEX_PATTERN="logstash-*"
-  #         SHARD_COUNT=8
-  #         REPLICA_COUNT=1
-  #         ES_URL=http://localhost:9200
-  #         while [[ "$(curl -s -o /dev/null -w '%{http_code}\n' $ES_URL)" != "200" ]]; do sleep 1; done
-  #         curl -XPUT "$ES_URL/_template/$TEMPLATE_NAME" -H 'Content-Type: application/json' -d'{"index_patterns":['\""$INDEX_PATTERN"\"'],"settings":{"number_of_shards":'$SHARD_COUNT',"number_of_replicas":'$REPLICA_COUNT'}}'
+# preStop:
+#     exec:
+#       command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+#   postStart:
+#     exec:
+#       command:
+#         - bash
+#         - -c
+#         - |
+#           #!/bin/bash
+#           # Add a template to adjust number of shards/replicas1
+#           TEMPLATE_NAME=my_template
+#           INDEX_PATTERN="logstash-*"
+#           SHARD_COUNT=8
+#           REPLICA_COUNT=1
+#           ES_URL=http://localhost:9200
+#           while [[ "$(curl -s -o /dev/null -w '%{http_code}\n' $ES_URL)" != "200" ]]; do sleep 1; done
+#           curl -XPUT "$ES_URL/_template/$TEMPLATE_NAME" -H 'Content-Type: application/json' -d'{"index_patterns":['\""$INDEX_PATTERN"\"'],"settings":{"number_of_shards":'$SHARD_COUNT',"number_of_replicas":'$REPLICA_COUNT'}}'
 
 keystore: []
 # To add secrets to the keystore:
 #  - secretName: lucenia-encryption-key
 
-networkPolicy: # todo - confirm in testing
+networkPolicy:  # todo - confirm in testing
   create: false
   ## Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.
   ## In order for a Pod to access Lucenia, it needs to have the following label:
@@ -500,10 +500,10 @@ sysctl:
 ## Set optimal sysctl's through privileged initContainer.
 sysctlInit:
   enabled: false
-  # override image, which is busybox by default
-  # image: busybox
-  # override image tag, which is latest by default
-  # imageTag:
+#   override image, which is busybox by default
+#   image: busybox
+#   override image tag, which is latest by default
+#   imageTag:
 # sysctlVmMaxMapCount to set through sysctlInit initContainer
 sysctlVmMaxMapCount: 262144
 
@@ -520,44 +520,44 @@ ulimitCount: 65536
 plugins:
   enabled: false
   installList: []
-  # - example-plugin
+#   - example-plugin
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
-  # - apiVersion: secrets-store.csi.x-k8s.io/v1
-  #   kind: SecretProviderClass
-  #   metadata:
-  #     name: argocd-secrets-store
-  #   spec:
-  #     provider: aws
-  #     parameters:
-  #       objects: |
-  #         - objectName: "argocd"
-  #           objectType: "secretsmanager"
-  #           jmesPath:
-  #               - path: "client_id"
-  #                 objectAlias: "client_id"
-  #               - path: "client_secret"
-  #                 objectAlias: "client_secret"
-  #     secretObjects:
-  #     - data:
-  #       - key: client_id
-  #         objectName: client_id
-  #       - key: client_secret
-  #         objectName: client_secret
-  #       secretName: argocd-secrets-store
-  #       type: Opaque
-  #       labels:
-  #         app.kubernetes.io/part-of: argocd
-  # - |
-  #    apiVersion: policy/v1
-  #    kind: PodDisruptionBudget
-  #    metadata:
-  #      name: {{ template "lucenia.uname" . }}
-  #      labels:
-  #        {{- include "lucenia.labels" . | nindent 4 }}
-  #    spec:
-  #      minAvailable: 1
-  #      selector:
-  #        matchLabels:
-  #          {{- include "lucenia.selectorLabels" . | nindent 6 }}
+#   - apiVersion: secrets-store.csi.x-k8s.io/v1
+#     kind: SecretProviderClass
+#     metadata:
+#       name: argocd-secrets-store
+#     spec:
+#       provider: aws
+#       parameters:
+#         objects: |
+#           - objectName: "argocd"
+#             objectType: "secretsmanager"
+#             jmesPath:
+#                 - path: "client_id"
+#                   objectAlias: "client_id"
+#                 - path: "client_secret"
+#                   objectAlias: "client_secret"
+#       secretObjects:
+#       - data:
+#         - key: client_id
+#           objectName: client_id
+#         - key: client_secret
+#           objectName: client_secret
+#         secretName: argocd-secrets-store
+#         type: Opaque
+#         labels:
+#           app.kubernetes.io/part-of: argocd
+#   - |
+#      apiVersion: policy/v1
+#      kind: PodDisruptionBudget
+#      metadata:
+#        name: {{ template "lucenia.uname" . }}
+#        labels:
+#          {{- include "lucenia.labels" . | nindent 4 }}
+#      spec:
+#       minAvailable: 1
+#        selector:
+#          matchLabels:
+#            {{- include "lucenia.selectorLabels" . | nindent 6 }}
