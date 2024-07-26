@@ -55,3 +55,4 @@ helm install my-deployment lucenia/<chart name>
 ```
 
 Please reference the [charts](charts/) directory for installation instructions and configuration options for Lucenia Helm charts.
+
