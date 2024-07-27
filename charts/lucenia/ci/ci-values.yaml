@@ -13,7 +13,7 @@ managerService: "lucenia-cluster-manager"
 # If false, the cluster will be created the replicaCount number of nodes
 singleNode: false
 # replicaCount is the number of nodes in the Lucenia cluster
-replicaCount: 3
+replicaCount: 1
 
 # roles represent the Lucenia node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
@@ -51,22 +51,23 @@ config:
   #
   #   rootLogger.level = info
   #   rootLogger.appenderRef.console.ref = console
-  node.pem: |
-    placeholder: create demo cert file
-  node-key.pem: |
-    placeholder: create demo cert file
-  root-ca.pem: |
-    placeholder: create demo cert file
+  # node.pem: |
+  #  placeholder: create demo cert file
+  # node-key.pem: |
+  #  placeholder: create demo cert file
+  # root-ca.pem: |
+  #  placeholder: create demo cert file
   lucenia.yml: |
     cluster.name: lucenia-cluster
 
     # Bind to all interfaces because we don't know what IP address Docker will assign to us.
     network.host: 0.0.0.0
     transport.host: localhost
+    transport.tcp.port: 9300
 
     # Setting network.host to a non-loopback address enables the annoying bootstrap checks. "Single-node" mode disables them again.
     # Implicitly done if ".singleNode" is set to "true".
-    discovery.type: single-node
+    # discovery.type: single-node
 
     # Start Lucenia Security Demo Configuration
     # WARNING: revise all the lines below before you go into production
@@ -161,13 +162,6 @@ image:
 
 # imagePullSecrets is used to set secrets to pull images from a private registry
 imagePullSecrets: []
-
-# nameOverride is used to override the `clusterName` when naming resources
-nameOverride: ""
-
-# fullnameOverride is used to override the `clusterName` and `nodeGroup` when naming resources
-# This should only be used when using a single `nodeGroup`, otherwise there will be name conflicts
-fullnameOverride: ""
 
 # podAnnotations is used to add annotations to all Lucenia pods
 podAnnotations: {}
@@ -330,8 +324,8 @@ protocol: https
 httpPort: 9200
 transportPort: 9300
 metricsPort: 9600
-httpHostPort: ""
-transportHostPort: ""
+# httpHostPort: ""
+# transportHostPort: ""
 
 
 service:
@@ -399,7 +393,7 @@ securityConfig:
     #   only update a single yml file.
     # * It is an error to define both data and securityConfigSecret.
     securityConfigSecret: ""
-    dataComplete: true
+    # dataComplete: true
     data: {}
     #   config.yml: |-
     #   internal_users.yml: |-
@@ -462,6 +456,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# nameOverride is used to override the `clusterName` when naming resources
+nameOverride: ""
+
+# fullnameOverride is used to override the `clusterName` and `nodeGroup` when naming resources
+# This should only be used when using a single `nodeGroup`, otherwise there will be name conflicts
+fullnameOverride: ""
+
 # Set to true to prevent slow manager node re-election
 managerTerminationFix: false
 
@@ -498,7 +499,7 @@ keystore: []
 #  - secretName: lucenia-encryption-key
 
 networkPolicy:  # todo - confirm in testing
-  create: false
+  # create: false
   ## Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.
   ## In order for a Pod to access Lucenia, it needs to have the following label:
   ## {{ template "uname" . }}-client: "true"
@@ -527,7 +528,7 @@ sysctlInit:
 sysctlVmMaxMapCount: 262144
 
 ulimitInit:
-  enabled: false
+  enabled: true
   # override image, which is busybox by default
   # image: busybox
   # override image tag, which is latest by default
