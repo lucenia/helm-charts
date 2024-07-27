@@ -13,7 +13,7 @@ managerService: "lucenia-cluster-manager"
 # If false, the cluster will be created the replicaCount number of nodes
 singleNode: true
 # replicaCount is the number of nodes in the Lucenia cluster
-replicaCount: 1
+replicaCount: 0
 
 # roles represent the Lucenia node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
