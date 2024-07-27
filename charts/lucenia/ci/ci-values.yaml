@@ -72,7 +72,23 @@ config:
     # WARNING: revise all the lines below before you go into production
     plugins:
       license:
-        certificate_filepath: license/license.crt
+      #  certificate_filepath: license/license.crt
+      plugins.license.certificate: |
+        --------BEGIN LICENSE CERTIFICATE-------
+        ID: 625d793f-dacb-4e54-a8b1-8c0a54f55dbd
+        Type: Trial License
+        Licensee: Lucenia Skylite CI
+        Expiry: 2024-08-15
+
+        3A1922EA DDB27107 9975665F D249C8C5
+        84A0EE12 58BD83F6 E88B8C38 745E4E1A
+        3EC5F7BC AF90F431 0F23DFA1 FD93F86E
+        2EB432C7 4AC8F9F2 709F632F F81FB828
+        A3504DF8 906518A5 9C6BD82E 4C5DD2E2
+        052683DB 2E95F8A0 473C9808 A7EEC481
+        7429EFBC C32328DC 06126EBA 6CFA97C9
+        F494BE94 19AF9725 D6C5A1FF 4B988249
+        --------END LICENSE CERTIFICATE---------
       security:
         ssl:
           transport:
