@@ -11,9 +11,9 @@ managerService: "lucenia-cluster-manager"
 # Set to true if Lucenia cluster config discovery.type is set to single-node
 # If true, the cluster will be created with 1 replica by default
 # If false, the cluster will be created the replicaCount number of nodes
-singleNode: true
+singleNode: false
 # replicaCount is the number of nodes in the Lucenia cluster
-replicaCount: 0
+replicaCount: 3
 
 # roles represent the Lucenia node roles settings applied to nodeGroup
 # These will be set as an environment variable "node.roles".
@@ -448,7 +448,7 @@ ingress:
   enabled: false
   # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
   # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-  # ingressClassName: nginx
+  ingressClassName: nginx
 
   annotations: {}
   #   kubernetes.io/ingress.class: nginx
