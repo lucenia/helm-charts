@@ -5,6 +5,7 @@ nodeGroup: "manager"
 
 # managerService is the service that non-manager groups will try to connect to when joining the cluster
 # This should be set to clusterName + "-" + nodeGroup for your manager group.
+# This only needs to be set if your nodeGroup is set to something other than "manager"
 managerService: ""
 
 # singleNode is a boolean that determines if the cluster will be created with 1 replica
@@ -71,7 +72,7 @@ config:
     # WARNING: revise all the lines below before you go into production
     plugins:
       license:
-        certificate_filepath: license/license.crt
+        certificate_filepath: config/license/license.crt
       security:
         ssl:
           transport:
@@ -123,6 +124,9 @@ envFrom: []
 # secretMounts is a list of secrets and paths to mount inside the pod
 # For example, mounting certificates for security
 secretMounts: []
+  # - name: license-cert
+  #   secretName: license-cert
+  #   path: /usr/share/lucenia/config/license
 
 # hostAliases is used to add entries to the pod's /etc/hosts file
 hostAliases: []

@@ -4,10 +4,23 @@ The Lucenia Helm chart installs Lucenia on a Kubernets cluster using the Helm pa
 
 ## Installing the Chart
 
-To install the chart, use the following command:
+To install the chart, use the following commands:
 
 ```bash
-    helm install <release-name> ./lucenia --values values-file.yaml
+helm repo add lucenia https://lucenia.github.io/helm-charts/
+helm repo update
+```
+
+Once the charts repository reference is added, you can run the following command to see the charts.
+
+```bash
+helm search repo lucenia
+```
+
+You can now deploy charts with this command.
+
+```bash
+helm install my-deployment lucenia/<chart name>
 ```
 
 ## Uninstalling the Chart
