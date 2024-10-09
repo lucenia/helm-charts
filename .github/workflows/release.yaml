@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'charts/**'
+    paths-ignore:
+      - 'charts/**/ci/**'
 
 jobs:
   release:
