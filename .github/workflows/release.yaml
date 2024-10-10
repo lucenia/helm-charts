@@ -7,8 +7,7 @@ on:
       - main
     paths:
       - 'charts/**'
-    paths-ignore:
-      - 'charts/**/ci/**'
+      - '!charts/**/ci/**'
 
 jobs:
   release:
