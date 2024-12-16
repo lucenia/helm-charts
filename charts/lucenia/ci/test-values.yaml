@@ -1,0 +1,14 @@
+# singleNode is a boolean that determines if the cluster will be created with 1 replica
+# Set to true if Lucenia cluster config discovery.type is set to single-node
+# If true, the cluster will be created with 1 replica by default
+# If false, the cluster will be created the replicaCount number of nodes
+singleNode: true
+
+# config is used to set `lucenia.yml` and other configuration
+config:
+  lucenia.yml: |
+    cluster.name: lucenia-cluster
+
+    # Bind to all interfaces because we don't know what IP address Docker will assign to us.
+    network.host: 0.0.0.0
+
