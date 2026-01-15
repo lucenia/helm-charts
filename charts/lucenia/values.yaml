@@ -525,6 +525,8 @@ plugins:
   enabled: false
   installList: []
 #   - example-plugin
+  removeList: []
+#   - example-plugin
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
