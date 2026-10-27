@@ -2,6 +2,19 @@ apiVersion: v1
 entries:
   lucenia:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-10-27T03:22:14.002615541Z"
+    description: A Helm chart for Lucenia
+    digest: 93a7de87c333432993f556715ded091260e49914d619fc887446ed4cb4190850
+    home: https://lucenia.io
+    maintainers:
+    - name: Lucenia
+    name: lucenia
+    type: application
+    urls:
+    - https://github.com/lucenia/helm-charts/releases/download/lucenia-1.0.0/lucenia-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 0.13.0
     created: "2026-08-27T21:28:55.893548986Z"
     description: A Helm chart for Lucenia
@@ -326,4 +339,4 @@ entries:
     urls:
     - https://github.com/lucenia/helm-charts/releases/download/lucenia-0.1.4/lucenia-0.1.4.tgz
     version: 0.1.4
-generated: "2026-08-27T21:28:55.893770487Z"
+generated: "2026-10-27T03:22:14.002832449Z"
